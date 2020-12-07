@@ -1,0 +1,24 @@
+#include<iostream>
+
+template<typename T>
+ T compare(const T& x, const T& y)
+  { 
+    T retVal = ((x < y)? x : y);
+    return retVal;
+  }
+
+  template<typename T, typename ...Ts>
+ auto compare(const T& x, const T& y, Ts&&... args)
+ {
+   auto retVal = ((x < y)? compare(x, std::forward<Ts>(args)...) : compare(y, std::forward<Ts>(args)...));
+   return retVal;      
+  }
+
+
+  
+  int main (void)
+  {
+  int z = compare(2,4,-10,-19,8,-13);
+  std::cout<<z<<"\n";
+   return 0;
+      }
