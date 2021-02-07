@@ -35,29 +35,40 @@ typedef struct PrimeFaq
         X vsize = z;
         IsPrime lclprime;
         std::vector<X> lclVec; 
+        X resz;
                  
+       if(lclprime(z)==true)
+       {
+         lclVec.emplace_back(1);
+         lclVec.emplace_back(z);
+       }
+       else
+       {        
         for(X x=2; x*x<=(vsize); x++)
         {
            while(vsize%x == 0) 
            {   
              if (lclprime(x)==true)
                {
-                 std::cout<<"value of x is: "<<x<<"\n";   
-                 lclVec.emplace_back(x); 
-                 vsize /= x;
+                 resz = std::accumulate(std::begin(lclVec), std::end(lclVec), 1, std::multiplies<X>());                
+                if(resz < z) 
+                 {   
+                  lclVec.emplace_back(x);
+                  }   
+                  vsize /= x;                  
                }
-               //vsize /= x;  
-             }
-           // vsize /= x;  
-            
+               if (lclprime(vsize)==true)
+               {
+                 resz = std::accumulate(std::begin(lclVec), std::end(lclVec), 1, std::multiplies<X>());                
+                 if (resz < z)
+                 { 
+                  lclVec.emplace_back(vsize);
+                 }   
+               }               
+             }                     
            }
-            X resz = std::accumulate(std::begin(lclVec), std::end(lclVec), 1, std::multiplies<X>());
-         std::cout<<"value of resz outside if is: "<<resz<<"\n";    
-            if(resz == z)
-              {  
-               std::cout<<"value of resz is: "<<resz<<"\n";                
-              } 
-             return lclVec;
+          }
+          return lclVec;
            }        
        }PrimeFactors;
 
@@ -65,15 +76,17 @@ int main()
 {
     
    PrimeFactors lclPrmz;
-
-    int q = 1739;
+        
+    int q = 841;
     std::vector<int> mainVec;
 
     mainVec = lclPrmz(q);
 
+   std::cout<<"The prime factors of: "<<q<<" are:\n\n";   
+   std::string delim = "";
    for(auto x : mainVec)
     {
-        if(x!=0)
-         std::cout<<x<<"\n";
+         std::cout<<delim<<x;
+         delim = ",\n";
     }
 }
