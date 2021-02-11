@@ -1,19 +1,29 @@
-
 #include <iostream>
 #include <type_traits>
 #include <vector>
 #include <numeric>
 #include <functional> 
 #include <algorithm>
+#include <math.h>
 
 typedef struct Prime
 {
     template<class X> requires std::is_integral<X>::value    
-    bool constexpr operator()(X z) const
+    bool operator()(X z) const
      {
-        bool lclBl = true;        
-        for(X x=2; x<=(z/2); x++)
+        bool lclBl = true;
+        if (z <=1 )
         {
+           lclBl = false;
+        }
+       if (z == 2 )
+          {
+           lclBl = true;
+          }
+        else
+        {   
+         for(X x=3; x<=sqrt(z); x+=2)
+          {
            if(z%x == 0)
            {
                lclBl = false;
@@ -22,9 +32,8 @@ typedef struct Prime
            else
                continue;
          }
-        if (z==1)
-            lclBl = false;
-        return lclBl;
+        }   
+       return lclBl;
     };
  }IsPrime;
 
@@ -79,7 +88,7 @@ int main()
    PrimeFactors lclPrmz;
    IsPrime checkPrime;
         
-    long int q = 70577633;
+    long int q = 844379265313;
     std::vector<long int> mainVec;
     
      std::function<long int(long int)>funcPrime = checkPrime;
@@ -99,4 +108,3 @@ int main()
          delim = ",\n";
     }
 }
-
