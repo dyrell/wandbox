@@ -88,7 +88,7 @@ int main()
    PrimeFactors lclPrmz;
    IsPrime checkPrime;
         
-    long int q = 844379265313;
+    long int q = 9007199254740997;
     std::vector<long int> mainVec;
     
      std::function<long int(long int)>funcPrime = checkPrime;
