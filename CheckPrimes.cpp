@@ -12,7 +12,7 @@ typedef struct Prime
     bool operator()(X z) const
      {
         bool lclBl = true;
-        if ((z <= 1 )||(z%2 == 0))
+        if ((z <= 1)||(z%2 == 0))
         {
            lclBl = false;
         }
@@ -88,7 +88,7 @@ int main()
    PrimeFactors lclPrmz;
    IsPrime checkPrime;
         
-    long int q = 16;
+    long int q = 844379265313;
     std::vector<long int> mainVec;
     
      std::function<long int(long int)>funcPrime = checkPrime;
