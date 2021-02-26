@@ -82,19 +82,38 @@ typedef struct PrimeFaq
            }        
        }PrimeFactors;
 
+typedef struct PowTwo
+{    
+    template<class T> requires std::is_integral_v<T>
+    bool constexpr operator()(T x) const
+    {
+        T z = x+1;
+        return( (z>0) && ((z&x)==0) );
+    }
+}IsPowerOfTwo;
+
 int main()
 {
     
    PrimeFactors lclPrmz;
    IsPrime checkPrime;
+   IsPowerOfTwo isMstrcPrm;
         
     long int q = 98371618547060987;
+    //long int q = 844379265313;
+    //long int q = 65537;
     std::vector<long int> mainVec;
-    
-     std::function<long int(long int)>funcPrime = checkPrime;
+    std::function<long int(long int)>funcPrime = checkPrime;
     
     if (funcPrime(q))
+       {
         std::cout<<"The number: "<<q<<" is prime\n\n";
+        //Check Mesrsenic prime if less than power of two
+        if (isMstrcPrm(q))
+            std::cout<<"\nThe number: "<<q<<" is a Mersenne prime:\n"; 
+        else
+            std::cout<<"\nThe number: "<<q<<" is not a Mersenne prime:\n"; 
+         }       
     else
         std::cout<<"The number: "<<q<<" ain't prime\n\n";
 
@@ -106,5 +125,5 @@ int main()
     {
          std::cout<<delim<<x;
          delim = ",\n";
-    }
+    }         
 }
