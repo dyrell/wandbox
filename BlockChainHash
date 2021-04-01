@@ -22,8 +22,9 @@ class Block
                }
           Block(const std::string& trans, const Block& blck) : transaction(trans) 
                {
-                std::hash<std::string> cnstrctHsh;
-                hashTrans = (cnstrctHsh(transaction))^blck.getHash();
+                 std::hash<std::string> cnstrctHsh;
+                 transaction += blck.getTransact(); //Append the previous transaction to allow chaining
+                 hashTrans = (cnstrctHsh(transaction))|blck.getHash();
                }  
          Block(const Block& blck)
                {
@@ -63,20 +64,23 @@ int main()
     std::string trans1 {"block1"};
     std::string trans2 {"block2"};
     std::string trans3 {"block3"};
+    std::string trans4 {"block4"};
+    std::string trans5 {"block5"};
            
     std::unique_ptr<Block> uPtr0 = std::make_unique<Block>(trans0);
     std::unique_ptr<Block> uPtr1 = std::make_unique<Block>(trans1, *uPtr0) ;
     std::unique_ptr<Block> uPtr2 = std::make_unique<Block>(trans2, *uPtr1);
     std::unique_ptr<Block> uPtr3 = std::make_unique<Block>(trans3, *uPtr2);
-    std::unique_ptr<Block*> uPtr4 = std::make_unique<Block*>(uPtr3.release()); //potential memory leak
+    std::unique_ptr<Block> uPtr4 = std::make_unique<Block>(trans4, *uPtr3);
+    std::unique_ptr<Block> uPtr5 = std::make_unique<Block>(trans5, *uPtr4);
+    std::unique_ptr<Block*> uPtr6 = std::make_unique<Block*>(uPtr5.release()); //potential memory leak
            
-    Block * memLk = *uPtr4; //memory leak detected    
+    Block * memLk = *uPtr6; //memory leak detected    
      
     std::cout<<"\nPrinting object: "<< *memLk << std::endl;
         
-    if(*uPtr4 != 0)
-        (*(*uPtr4)).printHash();
+    if(*uPtr6 != 0)
+        (*(*uPtr6)).printHash();
     
     delete memLk;
-  
-}
+  }
